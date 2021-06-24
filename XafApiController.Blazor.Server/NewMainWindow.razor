@@ -1,0 +1,62 @@
+﻿@using DevExpress.ExpressApp.Blazor.Templates.ActionContainers
+@using DevExpress.ExpressApp.Blazor.Components
+@using DevExpress.ExpressApp.Blazor.Services
+@using DevExpress.ExpressApp.Templates.ActionControls
+@using DevExpress.ExpressApp.Templates
+@using DevExpress.Blazor.Internal
+
+
+
+
+
+@inherits DevExpress.ExpressApp.Blazor.Templates.WindowTemplateComponentBase
+
+<h3>NewMainWindow</h3>
+<div id="main-window-template-component" class="app h-100 d-flex flex-column">
+    <div class="header d-flex flex-row shadow-sm navbar-dark flex-nowrap @AdditionalHeaderClass">
+        <div class="header-left-side d-flex align-items-center pl-2 @HeaderLeftSideCssClass">
+            <button onclick="xaf.toggleSideBar()" class="btn-hamburger p-0 btn btn-secondary btn-header">
+                <XafImage ImageName="Hamburger" Size="24" Styles="margin: auto;" />
+            </button>
+            <div class="header-logo mx-3"></div>
+        </div>
+        <div class="header-right-side w-100 overflow-hidden d-flex align-items-center pl-4">
+            @if(FrameTemplate.View is DevExpress.ExpressApp.DetailView) {
+                <NavigateBackComponent ActionControl="@FrameTemplate.NavigateBackActionControl" />
+            }
+            <ViewCaptionComponent WindowCaption="@(FrameTemplate)" />
+            @if(Application.Security.User != null) {
+                <AccountComponent SecurityContainer="@FrameTemplate.SecurityActionContainer" />
+            }
+            <ThemeSwitcher></ThemeSwitcher>
+        </div>
+    </div>
+    <div class="xaf-flex-auto overflow-hidden d-flex">
+        <div class="sidebar d-none d-sm-flex flex-column">
+            <div class="xaf-flex-auto overflow-auto">
+                <NavigationComponent ActionControl="@FrameTemplate.ShowNavigationItemActionControl" />
+            </div>
+            <div class="about-info text-muted mx-3 mb-4">
+                @((MarkupString)FrameTemplate.AboutInfoString)
+            </div>
+        </div>
+        <div class="sidebar-sm-shadow" onclick="xaf.toggleSideBar()"></div>
+        <div class="main xaf-flex-auto overflow-hidden d-flex flex-column">
+            <SizeModeContainer>
+                <SelectionDependentToolbar View="@FrameTemplate.View"
+                                           CssClass="main-toolbar py-3 px-2 px-sm-3"
+                                           SelectionDependentActionContainers="@FrameTemplate.SelectionDependentActionContainers"
+                                           SelectionIndependentActionContainers="@FrameTemplate.SelectionIndependentActionContainers"
+                                           ViewActionContainers="@FrameTemplate.ViewActionContainers" />
+                <div class="main-content xaf-flex-auto overflow-auto pb-3 px-2 px-sm-3">
+                    <ViewSiteComponent View="@FrameTemplate.View" @key="FrameTemplate.View" />
+                </div>
+            </SizeModeContainer>
+        </div>
+    </div>
+</div>
+@code {
+    public static RenderFragment Creator(DevExpress.ExpressApp.Blazor.Templates.WindowTemplate frameTemplate) {
+        return @<NewMainWindow FrameTemplate="@frameTemplate" />;
+    }
+}
