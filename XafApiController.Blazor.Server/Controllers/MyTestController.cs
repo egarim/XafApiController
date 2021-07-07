@@ -16,7 +16,7 @@ using XafApiController.Module.BusinessObjects;
 
 namespace XafApiController.Blazor.Server.Controllers
 {
-    [JwtAuthenticationAttribute]
+    [JwtAuthentication]
     [Route("api/[controller]")]
     [ApiController]
     public class MyTestController : ControllerBase
@@ -32,11 +32,11 @@ namespace XafApiController.Blazor.Server.Controllers
             try
             {
                 var os = _objectSpaceService.GetObjectSpace();
-                var ObjectType = _objectSpaceService.Types.FirstOrDefault(t=>t.Name==Type);
+                var ObjectType = _objectSpaceService.Types.FirstOrDefault(t=>t.Name.ToLower()==Type.ToLower());
 
 
                 XafDataView dataView = (XafDataView)os.CreateDataView(ObjectType, PropertiesList, CriteriaOperator.Parse(Criteria), null);
-                //dynamic objects = dataView[0].DataView.AsDynamic().objects.Instance;
+  
 
                 var expressions = dataView.Expressions;
                 List<List<object>> values = new List<List<object>>();
